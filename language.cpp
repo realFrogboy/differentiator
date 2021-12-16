@@ -1,6 +1,7 @@
 #include "language.h"
 
 extern char *str;
+extern char aVal[N_VAL][MAX_NAME]; 
 
 Node_t* GetG() {
     Node_t* res = GetE();
@@ -28,13 +29,28 @@ Node_t* GetE() {
 
 
 Node_t* GetT() {
-    Node_t *res = GetP();
+    Node_t *res = GetD();
 
     while ((*str == '*') || (*str == '/')) {
         char sign = *str;
         str++;
         
+        Node_t *val = GetD();
+        res = nodeCtor(SIGN, (int)sign, res, val);
+    }
+
+    return res;
+}
+
+Node_t* GetD() {
+    Node_t *res = GetP();
+
+    if (*str == '^') {
+        char sign = *str;
+        str++;
+
         Node_t *val = GetP();
+
         res = nodeCtor(SIGN, (int)sign, res, val);
     }
 
@@ -56,7 +72,12 @@ Node_t* GetP() {
         }
     }
     else {
-        Node_t* res = GetN();
+        Node_t *res = {};
+        if (isalpha(*str))
+            res = GetV();
+        else
+            res = GetN();
+
         return res;
     }
 }
@@ -78,16 +99,52 @@ Node_t* GetN() {
 }
 
 Node_t* GetV() {
-    char res = '\0';
+    char *str_old  = str;
 
-    if ((('a' <= *str) && (*str <= 'z')) || (('A' <= *str) && (*str <= 'Z')) || (*str == '_')) {
-        res = *str;
+    static int val_num = 0;
+
+    int num = 0;
+    char name[MAX_NAME] = {};
+    while ((('a' <= *str) && (*str <= 'z')) || (('A' <= *str) && (*str <= 'Z'))) {
+        name[num++] = *str;
         str++;
     }
-    else 
+    name[num] = '\0';
+    
+    if (str == str_old) 
         assert(0);
 
-    return nodeCtor(VAR, res, NULL, NULL);
+    int func_num = 0;
+    if ((func_num = isFunc(name)) != NON_EXISTENT) 
+        return GetF(func_num);
+
+    else {
+        strncpy(aVal[val_num], name, strlen(name) + 1);
+        val_num++;
+        return nodeCtor(VAR, val_num - 1, NULL, NULL);
+    }
+}
+
+Node_t* GetF(int func_num) {
+    Node_t *val1 = GetP();
+    Node_t *val2 = NULL;
+
+    if (func_num == LOG) 
+        val2 = GetP();
+    
+    return nodeCtor(FUNC, func_num, val1, val2);
+}
+
+
+FUNCTIONS isFunc(const char *name) {
+    assert(name);
+
+    for (int num = 0; num < NUMBER; num++) {
+        if (!strncmp(name, func[num].name, strlen(name))) 
+            return func[num].num;
+    }
+
+    return NON_EXISTENT;
 }
 
 
@@ -99,8 +156,6 @@ Node_t* nodeCtor(NODE_TYPES type, double val, Node_t *left, Node_t *right) {
     node->data = val;
     node->left = left;
     node->right = right;
-
-    printf("!!!\n");
 
     return node;
 }
