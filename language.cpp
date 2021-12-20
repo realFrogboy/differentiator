@@ -129,8 +129,10 @@ Node_t* GetF(int func_num) {
     Node_t *val1 = GetP();
     Node_t *val2 = NULL;
 
-    if (func_num == LOG) 
+    if (func_num == LOG) {
         val2 = GetP();
+        return nodeCtor(FUNC, func_num, val2, val1);
+    }
     
     return nodeCtor(FUNC, func_num, val1, val2);
 }
@@ -145,17 +147,4 @@ FUNCTIONS isFunc(const char *name) {
     }
 
     return NON_EXISTENT;
-}
-
-
-Node_t* nodeCtor(NODE_TYPES type, double val, Node_t *left, Node_t *right) {
-    Node_t* node = (Node_t*)calloc(1, sizeof(Node_t));
-    assert(node); 
-
-    node->type = type;
-    node->data = val;
-    node->left = left;
-    node->right = right;
-
-    return node;
 }

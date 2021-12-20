@@ -1,14 +1,9 @@
-#ifndef LANGUAGE_H_
-#define LANGUAGE_H_
+#ifndef GRAPHMAKER_H_
+#define GRAPHMAKER_H_
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <assert.h>
-#include <string.h>
-#include <ctype.h>
 #include "../tree/tree.h"
-#include "../func_info.h"
-
+#include <stdlib.h>
+#include <stdio.h>
 
 #ifndef ASSERT
 #define ASSERT(statement, text) do {                                                                                    \
@@ -20,16 +15,8 @@
                                 } while (0)
 #endif
 
-
-Node_t* GetG();
-Node_t* GetE();
-Node_t* GetT();
-Node_t* GetD();
-Node_t* GetP();
-Node_t* GetN();
-Node_t* GetV();
-Node_t* GetF(int func_num);
-
-FUNCTIONS isFunc(const char *name);
+int make_graph(Node_t *root, const char *file);
+int make_node(Node_t *node, FILE *output);
+int connect_node(Node_t *node, FILE *output);
 
 #endif

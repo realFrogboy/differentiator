@@ -4,17 +4,14 @@
 #include <assert.h>
 #include "tree/tree.h"
 #include "onegin/oneggin.h"
+#include "optimizator/optimizator.h"
 
 #ifndef MAKE_CONST
 #define MAKE_CONST(val) nodeCtor(CONST, val, NULL, NULL)
 #endif
 
-#ifndef COPY_VAR
-#define COPY_VAR(var) nodeCtor(node->var->type, node->var->data, node->var->left, node->var->right)
-#endif
-
 #ifndef MAKE_FUNC
-#define MAKE_FUNC(val) nodeCtor(FUNC, val, COPY_VAR(left), NULL)
+#define MAKE_FUNC(val) nodeCtor(FUNC, val, copy_tree(LEFT), NULL)
 #endif
 
 #ifndef RETURN_NODE
@@ -33,38 +30,45 @@
 #define IS_SIGN(val) (val == '+') || (val == '-') || (val == '*') || (val == '/')
 #endif
 
-#ifndef REC_ADD_SUB
-#define REC_ADD_SUB do {                                            \
-                        record_node(node->left, output);            \
-                        fprintf(output, "%c", (int)node->data);     \
-                        record_node(node->right, output);           \
-                        break;                                      \
+#ifndef IS_E
+#define IS_E ((node->left->type == VAR) && (strncmp(aVal[(int)node->left->data], "e", 1) == 0))
+#endif
+
+#ifndef START_LATEX
+#define START_LATEX do {                                                \
+                        fprintf(output, "\\documentclass{article}\n"    \
+                        "\\usepackage{amsmath}\n"                       \
+                        "\\usepackage[english, russian]{babel}"         \
+                        "\\usepackage[utf8]{inputenc}\n"                \
+                        "\\begin{document}\n\n"                         \
+                        "Продифференцируем следующее выражение:\n");    \
                     } while (0)
 #endif
 
-#ifndef REC_MULT
-#define REC_MULT(val)   do {                                    \
-                            if (IS_PLUS_MINUS(val->data)) {     \
-                                fprintf(output, "(");           \
-                                record_node(val, output);       \
-                                fprintf(output, ")");           \
-                            }                                   \
-                            else                                \
-                                record_node(val, output);       \
+#ifndef LATEX_RES
+#define LATEX_RES   do {                                    \
+                        fprintf(output, "Результат:\n");    \
+                    } while (0)
+#endif
+
+#ifndef SIMPLIFY_LATEX
+#define SIMPLIFY_LATEX  do {                                        \
+                            fprintf(output, "Упростим ответ:\n");   \
                         } while (0)
 #endif
+
+
+#ifndef END_LATEX
+#define END_LATEX   do {                                            \
+                            fprintf(output, "$\n\n"                 \
+                                            "\\end{document}");     \
+                    } while (0)
+#endif
+
 
 Node_t* r_tree();
 
 Node_t *diff_node(Node_t *node);
-
-int make_graph(Node_t *root, const char *file);
-int make_node(Node_t *node, FILE *output);
-int connect_node(Node_t *node, FILE *output);
-
-int make_latex(Node_t *root, const char *file);
-int record_node(Node_t *node, FILE* output);
-
-int delete_node(Node_t *node);
+Node_t *copy_tree(Node_t *node);
 
 #endif

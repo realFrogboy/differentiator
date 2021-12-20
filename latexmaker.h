@@ -1,14 +1,17 @@
-#ifndef LANGUAGE_H_
-#define LANGUAGE_H_
+#ifndef LATEXMAKER_H_
+#define LATEXMAKER_H_
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <assert.h>
-#include <string.h>
-#include <ctype.h>
 #include "../tree/tree.h"
-#include "../func_info.h"
+#include <stdlib.h>
+#include <stdio.h>
 
+#ifndef PUT_BRACKET_LEFT
+#define PUT_BRACKET_LEFT (node->type == SIGN) && (((int)node->data == (int)'*') || (int)node->data == (int)'^') && (((int)node->left->data == (int)'+') || ((int)node->left->data == (int)'-'))
+#endif
+
+#ifndef PUT_BRACKET_RIGHT
+#define PUT_BRACKET_RIGHT (node->type == SIGN) && ((int)node->data == (int)'*') && (((int)node->right->data == (int)'+') || ((int)node->right->data == (int)'-'))
+#endif
 
 #ifndef ASSERT
 #define ASSERT(statement, text) do {                                                                                    \
@@ -20,16 +23,7 @@
                                 } while (0)
 #endif
 
-
-Node_t* GetG();
-Node_t* GetE();
-Node_t* GetT();
-Node_t* GetD();
-Node_t* GetP();
-Node_t* GetN();
-Node_t* GetV();
-Node_t* GetF(int func_num);
-
-FUNCTIONS isFunc(const char *name);
+int make_latex(Node_t *root, FILE *output);
+int record_node(Node_t *node, FILE *output);
 
 #endif
