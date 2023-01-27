@@ -30,9 +30,13 @@
 #define IS_SIGN(val) (val == '+') || (val == '-') || (val == '*') || (val == '/')
 #endif
 
+// #define STR_EQ(str1, str2, length)
+
 #ifndef IS_E
 #define IS_E ((node->left->type == VAR) && (strncmp(aVal[(int)node->left->data], "e", 1) == 0))
 #endif
+
+//const char
 
 #ifndef START_LATEX
 #define START_LATEX do {                                                \

@@ -24,7 +24,7 @@ struct Func {
     FUNCTIONS num;
 };
 
-static Func func[NUMBER] = {{"sin\0"   , SIN   },
+const  Func func[NUMBER] = {{"sin\0"   , SIN   },
                             {"cos\0"   , COS   },
                             {"tg\0"    , TG    },
                             {"ctg\0"   , CTG   },

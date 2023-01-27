@@ -44,7 +44,8 @@ Node_t *diff_node(Node_t *node) {
 
             switch ((int)node->data) {
 
-                case (int)'+': {
+                case (int)'+': { 
+                    // DIFFERENTIATE_SUM (LEFT, RIGHT, '+');
                     Node_t *new_left  = diff_node(LEFT);
                     Node_t *new_right = diff_node(RIGHT);
                     res = RETURN_NODE('+');
@@ -77,7 +78,7 @@ Node_t *diff_node(Node_t *node) {
 
                 case (int)'^': {
 
-                    if ((LEFT->type == CONST) || (LEFT->type == FUNC) || IS_E) {
+                    if ((LEFT->type == CONST) || IS_E) {
                         Node_t *new_left = copy_tree(node);
                         Node_t *new_right = MAKE_FUNC(LN); 
 
@@ -107,7 +108,7 @@ Node_t *diff_node(Node_t *node) {
             break;
         }
 
-        case FUNC: {
+        case FUNC: { //diff_func ()
 
             Node_t *ex_func = NULL;
 
@@ -118,7 +119,7 @@ Node_t *diff_node(Node_t *node) {
                     break;
                 }
 
-                case COS: {
+                case COS: {         //diff_cos
                     Node_t *new_left  = MAKE_CONST(0);
                     Node_t *new_right = MAKE_FUNC(SIN);
                     ex_func = RETURN_NODE('-');

@@ -14,7 +14,7 @@ Node_t *optimizate_tree(Node_t *node) {
     if (node->type == SIGN) {
 
         switch ((int)node->data) {
-
+            //common.c, common.h
             case '+': {
 
                 if (IS_LEFT(0)) {
@@ -35,9 +35,9 @@ Node_t *optimizate_tree(Node_t *node) {
             case '-': {
 
                 if (IS_LEFT(0)) {
-                    Node_t *tmp = copy_tree(node->right);
+                    Node_t *right_son = copy_tree(node->right);
                     delete_node(node);
-                    node = nodeCtor(SIGN, '-', nodeCtor(SIGN, ' ', NULL, NULL), tmp); // ' ' for unary minus
+                    node = nodeCtor(SIGN, '-', nodeCtor(SIGN, ' ', NULL, NULL), right_son); // ' ' for unary minus
                 } 
 
                 else if (IS_RIGHT(0)) {

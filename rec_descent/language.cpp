@@ -87,7 +87,7 @@ Node_t* GetN() {
     const char *old_str = str;
     int res = 0;
 
-    while (('0' <= *str) && (*str <= '9')) {
+    while (isdigit(*str)) { //MyAtoi
         res = res * 10 + (*str - '0');
         str++;
     }
@@ -105,7 +105,7 @@ Node_t* GetV() {
 
     int num = 0;
     char name[MAX_NAME] = {};
-    while ((('a' <= *str) && (*str <= 'z')) || (('A' <= *str) && (*str <= 'Z'))) {
+    while (isalpha(*str)) {
         name[num++] = *str;
         str++;
     }

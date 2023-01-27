@@ -13,7 +13,7 @@ enum NODE_TYPES{
 
 struct Node_t{
     NODE_TYPES type;
-    double data;
+    double data;        //union
     Node_t *left;
     Node_t *right;
 };

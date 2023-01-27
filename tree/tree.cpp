@@ -1,6 +1,6 @@
 #include "tree.h"
 
-Node_t* nodeCtor(NODE_TYPES type, double val, Node_t *left, Node_t *right) {
+Node_t* nodeCtor(NODE_TYPES type, const double val, Node_t *left, Node_t *right) {
     Node_t* node = (Node_t*)calloc(1, sizeof(Node_t));
     assert(node); 
 
@@ -16,7 +16,7 @@ int delete_node(Node_t *node) {
     if (!node)
         return 0;
 
-    delete_node(node->left);
+    delete_node(node->left);        //inorder, preorder итеративно
     delete_node(node->right);
 
     free(node);
