@@ -1,4 +1,4 @@
-# Differenciator
+# Differentiator
 The 7th task from Huawei course, 1st grade.<br />
 
 The program gets a file with expression, differentiates it and create a latex file with result.
